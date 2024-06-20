@@ -1,0 +1,246 @@
+:root {
+  --primary-color: #ff6347;
+  --secondary-color: #008080;
+  --tertiary-color: #ffd700;
+  --background-color: #ffebcd;
+}
+
+body {
+  font-family: "Courier New", Courier, monospace;
+  background-color: #ffebcd;
+  color: #000;
+  margin: 0 100px;
+  padding: 15px;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+}
+
+html {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+section {
+  margin-bottom: 10px;
+}
+
+.section-title {
+  font-weight: bold;
+  background-color: var(--primary-color);
+  color: #fff;
+  padding: 10px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: inline-block;
+  font-size: 18px;
+}
+
+textarea {
+  height: 150px;
+  border: 2px solid #000;
+  background-color: #fff;
+  color: #000;
+  font-size: 14px;
+  padding: 10px;
+  resize: none;
+  margin-bottom: 10px;
+}
+
+textarea:focus {
+  outline: none;
+  border: 2px solid var(--secondary-color);
+}
+
+textarea.invalid {
+  border: 2px solid var(--primary-color);
+}
+
+button {
+  background-color: var(--secondary-color);
+  color: #fff;
+  border: 2px solid #000;
+  padding: 10px 20px;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:hover {
+  background-color: var(--tertiary-color);
+  color: #000;
+}
+
+button:disabled {
+  background-color: var(--primary-color);
+  cursor: default;
+}
+
+button:disabled:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.table {
+  max-height: 400px;
+  overflow-y: auto;
+  border-bottom: 2px solid black;
+  margin-bottom: 20px;
+}
+.table::-webkit-scrollbar {
+  display: none;
+}
+.table {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-top: -3px;
+  border-top: 4px solid black;
+}
+
+thead {
+  background-color: black;
+}
+th {
+  background-color: var(--primary-color);
+  color: #fff;
+  border-bottom: 2.5px solid #000;
+}
+th,
+thead {
+  position: sticky;
+  top: 0;
+}
+
+th,
+td {
+  border-top: 2px solid #000;
+  border-left: 2px solid #000;
+  border-right: 2px solid #000;
+  padding: 10px;
+  text-align: left;
+}
+/* disable border for first td */
+tr:nth-child(1) td {
+  border-top: none;
+}
+
+progress {
+  width: 100%;
+  height: 10px;
+  margin-top: 20px;
+  background-color: #ffffff90;
+  border: 2px solid #000;
+}
+
+progress::-moz-progress-bar {
+  background: var(--secondary-color);
+}
+
+progress::-webkit-progress-value {
+  background: var(--secondary-color);
+}
+
+.progress {
+  width: 50%;
+}
+
+progress {
+  color: var(--secondary-color);
+}
+
+.progress-message {
+  text-align: center;
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+input:focus {
+  outline: none;
+  border: 2px solid var(--secondary-color);
+}
+
+input.invalid {
+  border: 2px solid var(--primary-color);
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input[type="checkbox"] {
+  /* custom color */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #000;
+  background-color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: bottom;
+  margin: 0px;
+  margin-bottom: 4px;
+}
+input[type="checkbox"]:checked {
+  background-color: var(--secondary-color);
+}
+label:has(+ input) {
+  display: inline-block;
+}
+input {
+  display: inline-block;
+}
+
+.message {
+  display: inline-block;
+  max-width: 40em;
+  vertical-align: middle;
+  padding: 5px;
+}
+
+select {
+  padding: 8px;
+  border: 2px solid #000;
+  background-color: #fff;
+  color: #000;
+  font-size: 14px;
+}
+
+select:focus {
+  outline: none;
+}
+
+select.invalid {
+  border: 2px solid var(--primary-color);
+}
+
+option {
+  background-color: #fff;
+  color: #000;
+  padding: 10px;
+}
+
+option:disabled {
+  background-color: var(--background-color);
+  color: #999;
+}
