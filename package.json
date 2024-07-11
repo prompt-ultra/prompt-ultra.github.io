@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "rm -rf ./docs && vite build && touch ./docs/.nojekyll",
+    "build": "rm -rf ./docs && vite build && touch ./docs/.nojekyll && cp cache.json ./docs && cp tweet_eval_emotion_test.jsonl ./docs",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
