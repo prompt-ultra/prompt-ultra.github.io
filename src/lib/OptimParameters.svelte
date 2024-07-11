@@ -1,9 +1,13 @@
 <script lang="ts">
+  import { models } from "./stores";
+
   let metaprompt: string =
     "Generate a variation of the following instruction while keeping the semantic meaning and the output format:\n\n" +
     "{prompt}\n\n" +
     "Output only the new instruction.";
   $: metaprompt_valid = metaprompt.includes("{prompt}");
+
+  let model = "gpt-3.5-turbo";
 
   let max_prompt_tokens: number = 100;
   $: max_prompt_tokens_invalid =
@@ -25,6 +29,7 @@
   export let params;
   $: params = {
     metaprompt,
+    model,
     max_prompt_tokens,
     pop_size,
     gen_multiplier,
@@ -50,6 +55,15 @@
       bind:value={metaprompt}
       class:invalid={!metaprompt_valid}
     />
+    <div>
+      <label for="model" style="display: inline-block;">Model name</label
+      ><select id="model" bind:value={model}>
+        {#each models as m}
+          <option value={m}>{m}</option>
+        {/each}
+      </select>
+    </div>
+
     <div class="input">
       <label for="max-prompt-tokens">Max prompt tokens</label><input
         type="number"
@@ -103,5 +117,9 @@
   }
   input {
     width: 2em;
+  }
+  select {
+    margin-bottom: 3px;
+    padding: 4px;
   }
 </style>

@@ -11,6 +11,7 @@
     text: string,
     {
       prompt,
+      model = "gpt-3.5-turbo",
       max_tokens = 20,
       temperature = 0.1,
       postprocess_fun = (s: string) => s,
@@ -19,6 +20,7 @@
       retries = 1,
     }: {
       prompt: string;
+      model: string;
       max_tokens: number;
       temperature: number;
       postprocess_fun: any;
@@ -49,7 +51,7 @@
           { role: "system", content: prompt },
           { role: "user", content: text },
         ],
-        model: "gpt-3.5-turbo",
+        model: model,
         max_tokens,
         temperature,
       });
@@ -82,6 +84,7 @@
     data: any[],
     {
       prompt,
+      model,
       max_tokens = 20,
       temperature = 0.1,
       postprocess_fun = (s: string) => s,
@@ -91,6 +94,7 @@
       threads = 4,
     }: {
       prompt: string;
+      model: string;
       max_tokens: number;
       temperature: number;
       postprocess_fun: any;
@@ -114,6 +118,7 @@
           try {
             let predicted = await process_one(row.text, {
               prompt,
+              model,
               max_tokens,
               temperature,
               postprocess_fun,
@@ -122,7 +127,6 @@
               retries,
             });
             pool.set(index, { ...row, ...predicted });
-            let keys = Array.from(pool.keys());
             while (pool.has(results.length)) {
               const key = results.length;
               const ans = pool.get(key);

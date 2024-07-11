@@ -21,21 +21,28 @@
         fileContent = <string>e.target.result;
         if (!fileContent) return;
         let records;
-        if (file.name.endsWith(".csv") || file.name.endsWith(".tsv")) {
-          records = Papa.parse(fileContent, {
-            delimiter: file.name.endsWith(".csv") ? "," : "\t",
-            header: true,
-          }).data;
-        } else if (
-          file.name.endsWith(".json") ||
-          file.name.endsWith(".jsonl")
-        ) {
-          if (file.name.endsWith(".json")) {
-            records = JSON.parse(fileContent);
-          } else {
-            const lines = fileContent.split("\n");
-            records = lines.map((line) => JSON.parse(line));
+        try {
+          if (file.name.endsWith(".csv") || file.name.endsWith(".tsv")) {
+            records = Papa.parse(fileContent, {
+              delimiter: file.name.endsWith(".csv") ? "," : "\t",
+              header: true,
+            }).data;
+          } else if (
+            file.name.endsWith(".json") ||
+            file.name.endsWith(".jsonl")
+          ) {
+            if (file.name.endsWith(".json")) {
+              records = JSON.parse(fileContent);
+            } else {
+              const lines = fileContent.split("\n");
+              records = lines
+                .filter((line) => line.trim())
+                .map((line) => JSON.parse(line));
+            }
           }
+        } catch (e) {
+          message = `Error: ${e}`;
+          return;
         }
         if (!records) {
           message = "Error: empty file";

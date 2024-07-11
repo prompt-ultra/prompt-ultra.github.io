@@ -1,10 +1,14 @@
 <svelte:options accessors />
 
 <script lang="ts">
+  import { models } from "./stores";
+
   let prompt = "";
 
   let max_tokens = 20;
   $: max_tokens_invalid = !Number.isInteger(max_tokens) || max_tokens < 1;
+
+  let model = "gpt-3.5-turbo";
 
   let temperature = 0.1;
   $: temp_invalid = temperature < 0 || temperature > 1;
@@ -61,6 +65,7 @@ return s;`,
   export let params;
   $: params = {
     prompt,
+    model,
     maxTokens: max_tokens,
     temperature,
     postprocess_fun,
@@ -84,8 +89,24 @@ return s;`,
   <div class="section-title">Prompt</div>
   <div class="prompt">
     <label for="prompt">Prompt</label>
-    <textarea id="prompt" bind:value={prompt} class:invalid={!prompt} />
+    <textarea
+      id="prompt"
+      bind:value={prompt}
+      class:invalid={!prompt}
+      placeholder="Classify this text as ..."
+    />
   </div>
+  <div>
+    <label for="model" style="display: inline-block;">Model name</label><select
+      id="model"
+      bind:value={model}
+    >
+      {#each models as m}
+        <option value={m}>{m}</option>
+      {/each}
+    </select>
+  </div>
+
   <div>
     <label for="max-tokens">Max tokens</label><input
       type="number"
@@ -102,7 +123,7 @@ return s;`,
       class:invalid={temp_invalid}
     />
   </div>
-  <div class="prompt">
+  <div>
     <label for="post-processing" style="display: inline-block;"
       >Post processing function</label
     ><select

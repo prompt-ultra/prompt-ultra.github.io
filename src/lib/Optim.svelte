@@ -20,10 +20,12 @@
   const mutate = async (
     {
       metaprompt,
+      model,
       max_prompt_tokens,
       temperature,
     }: {
       metaprompt: string;
+      model: string;
       max_prompt_tokens: number;
       temperature: number;
     },
@@ -36,7 +38,7 @@
           content: metaprompt.replace("{prompt}", prompt),
         },
       ],
-      model: "gpt-3.5-turbo",
+      model: model,
       max_tokens: max_prompt_tokens,
       temperature: temperature,
     });
@@ -50,6 +52,7 @@
   const optimize = async (
     prompt_params: {
       prompt: string;
+      model: string;
       max_tokens: number;
       temperature: number;
       postprocess_fun: any;
@@ -60,6 +63,7 @@
     },
     {
       metaprompt,
+      model,
       max_prompt_tokens,
       pop_size,
       gen_multiplier,
@@ -67,6 +71,7 @@
       temperature,
     }: {
       metaprompt: string;
+      model: string;
       max_prompt_tokens: number;
       pop_size: number;
       gen_multiplier: number;
@@ -112,6 +117,7 @@
           let new_prompt_text = await mutate(
             {
               metaprompt,
+              model,
               max_prompt_tokens,
               temperature,
             },
