@@ -4,6 +4,9 @@
   import Download from "./Download.svelte";
   import Process from "./Process.svelte";
 
+  let dataEl: Data;
+  let promptEl: Prompt;
+
   let fileName: string = "";
   let data: any[];
   $: baseName = fileName.split(".")[0];
@@ -18,14 +21,30 @@
 </script>
 
 <main>
-  <Data bind:fileName bind:data />
-  <Prompt bind:params={prompt_params} bind:valid={prompt_valid} />
+  <section>
+    <b>New here?</b>
+    <button
+      class="smallbutton"
+      on:click={() => {
+        dataEl.loadExample();
+        promptEl.loadExample();
+      }}
+      >Load Example
+    </button>
+  </section>
+  <Data bind:fileName bind:data bind:this={dataEl} />
+  <Prompt
+    bind:params={prompt_params}
+    bind:valid={prompt_valid}
+    bind:this={promptEl}
+  />
+
   <section>
     <div class="section-title">Process</div>
     <button
       class="button"
       id="process-run"
-      on:click={() => process.process(data, prompt_params)}
+      on:click={() => process.process(data, prompt_params, dataEl.isFake)}
       disabled={fileName === "" || !prompt_valid || process.running}>Run</button
     >
     <Process bind:this={process} bind:results />
@@ -61,5 +80,9 @@
   .results {
     font-weight: bold;
     font-family: sans-serif;
+  }
+
+  .smallbutton {
+    padding: 5px 10px;
   }
 </style>

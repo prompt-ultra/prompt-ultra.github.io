@@ -8,10 +8,33 @@
   export let data: any[] = [];
   export let requireLabel = false;
 
+  export let isFake = false;
+
+  export const loadExample = async () => {
+    let response = await fetch("./cache.json");
+    let cache = JSON.parse(await response.text());
+    Object.keys(cache).forEach(function (k) {
+      localStorage.setItem(k, cache[k]);
+    });
+
+    response = await fetch("./tweet_eval_emotion_test.jsonl");
+    let data = await response.text();
+    let file = new File([data], "tweet_eval_emotion_test.jsonl", {
+      type: "text/plain",
+    });
+    let dt = new DataTransfer();
+    dt.items.add(file);
+    fileInput.files = dt.files;
+    fileInput.dispatchEvent(new Event("change"));
+    isFake = true;
+  };
+
+  let fileInput: HTMLInputElement;
   let showTable = false;
   let fileContent: string | undefined = undefined;
 
   const fileUpload = (event: Event): void => {
+    isFake = false;
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       const file = input.files[0];
@@ -84,18 +107,13 @@
     style="display: none;"
     accept=".csv, .tsv, .json, .jsonl"
     on:change={fileUpload}
+    bind:this={fileInput}
   />
   <button
     class="button"
     id="data-upload"
     on:click={() => {
-      const fileInput = document.getElementById("fileInput");
-      if (fileInput) {
-        // Your code here
-      }
-      if (fileInput) {
-        fileInput.click();
-      }
+      fileInput.click();
     }}>Upload</button
   >
   <button
@@ -140,5 +158,8 @@
 
   #data-show {
     width: 90px;
+  }
+  .message {
+    padding: 0;
   }
 </style>

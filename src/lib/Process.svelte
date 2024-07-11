@@ -27,11 +27,13 @@
       default_class: string;
       whitelist: string[] | null;
       retries: number;
-    }
+    },
+    wait = false
   ) => {
     const key = JSON.stringify({
       text,
       prompt,
+      model,
       max_tokens,
       temperature,
       postprocess_fun: postprocess_fun.toString(),
@@ -40,7 +42,10 @@
       retries,
     });
     const cached = localStorage.getItem(key);
-    if (cached !== null) return JSON.parse(cached);
+    if (cached !== null) {
+      if (wait) await new Promise((r) => setTimeout(r, 10));
+      return JSON.parse(cached);
+    }
 
     let requests = 0;
     let raw_prediction = null;
@@ -102,9 +107,10 @@
       whitelist: string[] | null;
       retries: number;
       threads: number;
-    }
+    },
+    fake = false
   ) => {
-    if (!(await checkKey())) return;
+    if (!fake && !(await checkKey())) return;
     running = true;
 
     const indexedData = data.map((row, index) => ({ row, index }));
@@ -116,16 +122,20 @@
         threads,
         async ({ row, index }: { row: any; index: number }) => {
           try {
-            let predicted = await process_one(row.text, {
-              prompt,
-              model,
-              max_tokens,
-              temperature,
-              postprocess_fun,
-              default_class,
-              whitelist,
-              retries,
-            });
+            let predicted = await process_one(
+              row.text,
+              {
+                prompt,
+                model,
+                max_tokens,
+                temperature,
+                postprocess_fun,
+                default_class,
+                whitelist,
+                retries,
+              },
+              fake
+            );
             pool.set(index, { ...row, ...predicted });
             while (pool.has(results.length)) {
               const key = results.length;

@@ -5,6 +5,11 @@
 
   let prompt = "";
 
+  export const loadExample = () => {
+    prompt =
+      "Describe the emotion expressed in the following message as joy, anger, sadness or optimism. Output only “joy”, “anger”, “sadness” or “optimism” without quotes.";
+  };
+
   let max_tokens = 20;
   $: max_tokens_invalid = !Number.isInteger(max_tokens) || max_tokens < 1;
 
