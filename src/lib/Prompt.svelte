@@ -203,10 +203,12 @@ return s;`,
     width: 100%;
   }
   .prompt {
-    width: 50%;
+    max-width: 100%;
+    width: 600px;
   }
   .whitelist {
-    width: 50%;
+    max-width: 100%;
+    width: 600px;
   }
   /* inline mode for radio inputs */
   input[type="radio"] {

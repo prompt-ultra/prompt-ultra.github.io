@@ -110,7 +110,8 @@
 <style>
   @import "../app.css";
   textarea {
-    width: 50%;
+    max-width: 100%;
+    width: 600px;
   }
   label {
     min-width: 11em;
