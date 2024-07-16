@@ -77,7 +77,7 @@
   @import "../app.css";
 
   span {
-    display: inline;
+    display: inline-block;
   }
   #data-show {
     width: 90px;
