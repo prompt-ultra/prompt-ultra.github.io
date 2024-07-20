@@ -29,22 +29,27 @@
 </script>
 
 <main>
+  <section id="help">
+    This tab provides a convenient way to randomly split a dataset in two.
+    Upload a (labelled or unlabelled) dataset and input the number of samples
+    that should belong to the first of the two resulting datasets.
+  </section>
   <Data bind:this={data} bind:fileName />
-  <section>
+  <section id="parameters">
     <div class="section-title">Parameters</div>
-    <div class="input">
-      <label for="seed">Seed</label><input
-        type="text"
-        id="seed"
-        bind:value={seed}
-      />
-    </div>
     <div class="input">
       <label for="k">Number of samples</label><input
         type="number"
         id="k"
         bind:value={k}
         class:invalid={k_invalid}
+      />
+    </div>
+    <div class="input">
+      <label for="seed">Random seed</label><input
+        type="text"
+        id="seed"
+        bind:value={seed}
       />
     </div>
   </section>

@@ -7,6 +7,8 @@
     "Output only the new instruction.";
   $: metaprompt_valid = metaprompt.includes("{prompt}");
 
+  let showAdvanced = false;
+
   let model = "gpt-3.5-turbo";
 
   let max_prompt_tokens: number = 100;
@@ -46,15 +48,28 @@
     !temperature_invalid;
 </script>
 
-<main>
-  <section id="parameters">
-    <div class="section-title">Parameters</div>
-    <label for="metaprompt">Metaprompt</label>
-    <textarea
-      id="metaprompt"
-      bind:value={metaprompt}
-      class:invalid={!metaprompt_valid}
-    />
+<section id="parameters">
+  <div class="section-title">Meta-Instructions</div>
+  <button
+    on:click={() => {
+      showAdvanced = !showAdvanced;
+    }}>{showAdvanced ? "Hide" : "Show"} advanced options</button
+  >
+  <div class="message">
+    Write a set of meta-instructions asking the LLM to rephrase a given set of
+    instructions. These meta-instructions will be repeatedly applied to generate
+    new labelling instructions.<br />A suitable example is already provided
+    below.
+  </div>
+
+  <label for="metaprompt">Meta-instructions</label>
+  <textarea
+    id="metaprompt"
+    bind:value={metaprompt}
+    class:invalid={!metaprompt_valid}
+  />
+
+  {#if showAdvanced}
     <div>
       <label for="model" style="display: inline-block;">Model name</label
       ><select id="model" bind:value={model}>
@@ -104,15 +119,11 @@
         class:invalid={temperature_invalid}
       />
     </div>
-  </section>
-</main>
+  {/if}
+</section>
 
 <style>
   @import "../app.css";
-  textarea {
-    max-width: 100%;
-    width: 600px;
-  }
   label {
     min-width: 11em;
   }
@@ -122,5 +133,10 @@
   select {
     margin-bottom: 3px;
     padding: 4px;
+  }
+  .message {
+    display: block;
+    padding-top: 0px;
+    padding-bottom: 10px;
   }
 </style>

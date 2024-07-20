@@ -10,6 +10,11 @@
       "Describe the emotion expressed in the following message as joy, anger, sadness or optimism. Output only “joy”, “anger”, “sadness” or “optimism” without quotes.";
   };
 
+  export let message =
+    "Enter instructions asking the LLM to label the dataset.";
+
+  let showAdvanced = false;
+
   let max_tokens = 20;
   $: max_tokens_invalid = !Number.isInteger(max_tokens) || max_tokens < 1;
 
@@ -91,9 +96,17 @@ return s;`,
 </script>
 
 <section>
-  <div class="section-title">Prompt</div>
+  <div class="section-title">Instructions</div>
+  <button
+    on:click={() => {
+      showAdvanced = !showAdvanced;
+    }}>{showAdvanced ? "Hide" : "Show"} advanced options</button
+  >
+  <div class="message">
+    {message}
+  </div>
   <div class="prompt">
-    <label for="prompt">Prompt</label>
+    <label for="prompt">Instructions</label>
     <textarea
       id="prompt"
       bind:value={prompt}
@@ -101,107 +114,104 @@ return s;`,
       placeholder="Classify this text as ..."
     />
   </div>
-  <div>
-    <label for="model" style="display: inline-block;">Model name</label><select
-      id="model"
-      bind:value={model}
-    >
-      {#each models as m}
-        <option value={m}>{m}</option>
-      {/each}
-    </select>
-  </div>
+  {#if showAdvanced}
+    <div>
+      <label for="model" style="display: inline-block;">Model name</label
+      ><select id="model" bind:value={model}>
+        {#each models as m}
+          <option value={m}>{m}</option>
+        {/each}
+      </select>
+    </div>
 
-  <div>
-    <label for="max-tokens">Max tokens</label><input
-      type="number"
-      id="max-tokens"
-      bind:value={max_tokens}
-      class:invalid={!Number.isInteger(max_tokens) || max_tokens < 1}
-    />
-  </div>
-  <div>
-    <label for="temperature">Temperature</label><input
-      type="number"
-      id="temperature"
-      bind:value={temperature}
-      class:invalid={temp_invalid}
-    />
-  </div>
-  <div>
-    <label for="post-processing" style="display: inline-block;"
-      >Post processing function</label
-    ><select
-      id="postprocessing"
-      bind:value={ppchoice}
-      on:input={() => {
-        changedByMenu = true;
-      }}
-    >
-      <option value="none">None</option>
-      <option value="trim">Trim</option>
-      <option value="last">Last word</option>
-      <option value="custom">Custom</option>
-    </select>
-    {#if ppchoice !== "none"}
-      <textarea
-        id="post-processing"
-        bind:value={postprocess}
+    <div>
+      <label for="max-tokens">Max tokens</label><input
+        type="number"
+        id="max-tokens"
+        bind:value={max_tokens}
+        class:invalid={!Number.isInteger(max_tokens) || max_tokens < 1}
+      />
+    </div>
+    <div>
+      <label for="temperature">Temperature</label><input
+        type="number"
+        id="temperature"
+        bind:value={temperature}
+        class:invalid={temp_invalid}
+      />
+    </div>
+    <div>
+      <label for="post-processing" style="display: inline-block;"
+        >Post processing function</label
+      ><select
+        id="postprocessing"
+        bind:value={ppchoice}
         on:input={() => {
-          let value = postprocess;
-          ppchoice = "custom";
-          postprocess = value;
+          changedByMenu = true;
         }}
-        class:invalid={postprocess_fun === null}
-      ></textarea>
-    {/if}
-  </div>
-  <div class="default-class">
-    <label for="default-class">Default class</label><input
-      type="text"
-      id="default-class"
-      bind:value={default_class}
-      style="width: 6em"
-    />
-  </div>
-  <div class="whitelist" style="user-select: none">
-    <label for="enable-wl">Label whitelist </label><input
-      type="checkbox"
-      id="enable-wl"
-      bind:checked={enable_wl}
-    />
-    {#if enable_wl}
-      (one label per line)
-      <textarea
-        id="whitelist"
-        bind:value={whitelist_txt}
-        class:invalid={wl_invalid}
-      ></textarea>
-    {/if}
-  </div>
-  <div>
-    <label for="retries">Retries</label><input
-      type="number"
-      id="retries"
-      bind:value={retries}
-      class:invalid={retries_invalid}
-    />
-  </div>
-  <div>
-    <label for="threads">Threads</label><input
-      type="number"
-      id="threads"
-      bind:value={threads}
-      class:invalid={threads_invalid}
-    />
-  </div>
+      >
+        <option value="none">None</option>
+        <option value="trim">Trim</option>
+        <option value="last">Last word</option>
+        <option value="custom">Custom</option>
+      </select>
+      {#if ppchoice !== "none"}
+        <textarea
+          id="post-processing"
+          bind:value={postprocess}
+          on:input={() => {
+            let value = postprocess;
+            ppchoice = "custom";
+            postprocess = value;
+          }}
+          class:invalid={postprocess_fun === null}
+        ></textarea>
+      {/if}
+    </div>
+    <div class="default-class">
+      <label for="default-class">Default class</label><input
+        type="text"
+        id="default-class"
+        bind:value={default_class}
+        style="width: 6em"
+      />
+    </div>
+    <div class="whitelist" style="user-select: none">
+      <label for="enable-wl">Label whitelist </label><input
+        type="checkbox"
+        id="enable-wl"
+        bind:checked={enable_wl}
+      />
+      {#if enable_wl}
+        (one label per line)
+        <textarea
+          id="whitelist"
+          bind:value={whitelist_txt}
+          class:invalid={wl_invalid}
+        ></textarea>
+      {/if}
+    </div>
+    <div>
+      <label for="retries">Retries</label><input
+        type="number"
+        id="retries"
+        bind:value={retries}
+        class:invalid={retries_invalid}
+      />
+    </div>
+    <div>
+      <label for="threads">Threads</label><input
+        type="number"
+        id="threads"
+        bind:value={threads}
+        class:invalid={threads_invalid}
+      />
+    </div>
+  {/if}
 </section>
 
 <style>
   @import "../app.css";
-  textarea {
-    width: 100%;
-  }
   .prompt {
     max-width: 100%;
     width: 600px;
@@ -226,5 +236,10 @@ return s;`,
   }
   input {
     width: 2em;
+  }
+  .message {
+    display: block;
+    padding-top: 0px;
+    padding-bottom: 10px;
   }
 </style>

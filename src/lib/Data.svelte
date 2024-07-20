@@ -100,7 +100,7 @@
 </script>
 
 <section>
-  <div class="section-title">Data</div>
+  <div class="section-title">Dataset</div>
   <input
     type="file"
     id="fileInput"
@@ -158,8 +158,5 @@
 
   #data-show {
     width: 90px;
-  }
-  .message {
-    padding: 0;
   }
 </style>

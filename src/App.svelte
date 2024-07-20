@@ -1,5 +1,6 @@
 <script lang="ts">
   import { local } from "d3";
+  import Welcome from "./lib/Welcome.svelte";
   import Eval from "./lib/Eval.svelte";
   import Optim from "./lib/Optim.svelte";
   import Split from "./lib/Split.svelte";
@@ -10,6 +11,7 @@
     selectedTab = index;
   }
   let tabs = [
+    { name: "wilköm", phon: "/ˈwɛlkəm/", component: Welcome },
     { name: "evål", phon: "/ɪˈvæl/", component: Eval },
     { name: "øptim", phon: "/ˈɒptɪm/", component: Optim },
     { name: "splët", phon: "/splɪt/", component: Split },

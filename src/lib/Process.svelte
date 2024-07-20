@@ -46,6 +46,7 @@
       if (wait) await new Promise((r) => setTimeout(r, 10));
       return JSON.parse(cached);
     }
+    if (wait) throw new Error("Not in cache");
 
     let requests = 0;
     let raw_prediction = null;
@@ -116,7 +117,7 @@
     const indexedData = data.map((row, index) => ({ row, index }));
     const pool = new Map();
     results = [];
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       mapLimit(
         indexedData,
         threads,
@@ -143,18 +144,39 @@
               results = [...results, ans];
               pool.delete(key);
             }
-          } catch (error) {
-            console.error(error);
+          } catch (error: any) {
+            if (error.message == "Not in cache") {
+              throw error;
+            }
+            running = false;
             reject(error);
           }
         },
         (err: any) => {
           running = false;
           if (err) {
-            alert(err);
-            reject(err);
+            if (err.message == "Not in cache") {
+              process(
+                data,
+                {
+                  prompt,
+                  model,
+                  max_tokens,
+                  temperature,
+                  postprocess_fun,
+                  default_class,
+                  whitelist,
+                  retries,
+                  threads,
+                },
+                false
+              ).then(resolve);
+            } else {
+              alert(err);
+              reject(err);
+            }
           } else {
-            resolve(results);
+            resolve();
           }
         }
       );

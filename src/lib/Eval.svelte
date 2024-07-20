@@ -16,12 +16,21 @@
   let results: any[];
 
   let process: Process;
+  let running: false;
 
   $: done = data && data.length > 0 && results.length == data.length;
+  $: displayProgress = running || done;
 </script>
 
 <main>
-  <section>
+  <section id="help">
+    <p>
+      Upload a dataset in the Dataset section, enter labelling instructions in
+      the Instructions section and make the LLM apply those instructions in the
+      Process section.
+    </p>
+  </section>
+  <section id="new">
     <b>New here?</b>
     <button
       class="smallbutton"
@@ -31,6 +40,10 @@
       }}
       >Load Example
     </button>
+    <div class="message">
+      Load an already labeled example dataset and instructions for this dataset
+      (no need for an OpenAI API key to process this example).
+    </div>
   </section>
   <Data bind:fileName bind:data bind:this={dataEl} />
   <Prompt
@@ -47,8 +60,18 @@
       on:click={() => process.process(data, prompt_params, dataEl.isFake)}
       disabled={fileName === "" || !prompt_valid || process.running}>Run</button
     >
-    <Process bind:this={process} bind:results />
-    {#if (process && process.running) || done}
+    <div>
+      <p>
+        Press Run to make the LLM execute your instructions and label the
+        dataset (requires an OpenAI API key).
+        <br /> This outputs a new dataset comprising the entries of the initial
+        dataset and the labels produced by the LLM.
+        <br /> If the initial dataset was already labelled, the two sets of labels
+        are compared and the accuracy of the new labels is computed.
+      </p>
+    </div>
+    <Process bind:this={process} bind:results bind:running />
+    {#if displayProgress}
       <div class="progress">
         <progress id="progress-bar" value={results.length} max={data.length}
         ></progress>
@@ -84,5 +107,11 @@
 
   .smallbutton {
     padding: 5px 10px;
+  }
+  #help > p {
+    /* margin: 8px; */
+  }
+  #new {
+    margin-bottom: 10px;
   }
 </style>
