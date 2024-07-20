@@ -1,6 +1,6 @@
 <main>
   <section>
-    <b>Welcome to Prompt Ultra !</b>
+    <b>Welcome to Prompt Ultra!</b>
 
     <p>
       This browser-based app allows you to automatically label textual datasets
@@ -48,5 +48,6 @@
     max-width: 100%;
     width: 600px;
     margin: auto;
+    padding: 10px 20px;
   }
 </style>
