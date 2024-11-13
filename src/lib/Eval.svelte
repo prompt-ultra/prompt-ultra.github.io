@@ -87,7 +87,10 @@
       canDownload={done}
     />
     {#if done}
-      <div class="results">Accuracy: {process.accuracy(results)}</div>
+      <div class="results">
+        Accuracy: {process.accuracy(results)} / {results.length} =
+        {process.accuracy(results) / results.length}
+      </div>
     {/if}
   </section>
 </main>

@@ -79,12 +79,10 @@
   };
   export const accuracy = (results: any[]) => {
     let correct = 0;
-    let total = 0;
     for (let row of results) {
       if (row.prediction === row.label) correct += 1;
-      total += 1;
     }
-    return correct / total;
+    return correct;
   };
   export const process = async (
     data: any[],
