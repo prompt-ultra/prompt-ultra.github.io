@@ -18,7 +18,7 @@
   let max_tokens = 20;
   $: max_tokens_invalid = !Number.isInteger(max_tokens) || max_tokens < 1;
 
-  let model = "gpt-3.5-turbo";
+  let model = "gpt-4o-mini";
 
   let temperature = 0.1;
   $: temp_invalid = temperature < 0 || temperature > 1;
